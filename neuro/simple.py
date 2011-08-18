@@ -7,25 +7,38 @@
 #
 # GPL v3
 
+from pylab import *
 
-learn_set = [[0.3, 1.6], [0.35, 1.4], [0.4, 1.40], [0.5, 1.6], [0.6, 1.7], [0.8, 2.0], [0.95, 1.7], [1.1, 2.10]]
-nu = 0.1
+#learn_set_x = [0.3, 0.35, 0.4, 0.5, 0.6, 0.8, 0.95, 1.1]
+#learn_set_t = [1.6, 1.4,  1.40,1.6, 1.7, 2.0, 1.7, 2.10]
+
+learn_set_x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+learn_set_t = [0.5, 1, 1.5, 2, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5]
+
+nu = 0.3
 c = 0.3
 m = 0.3
 
-for i in range(len(learn_set)):
-	for k in range(10000):
+for i in range(len(learn_set_x)):
+
+	x = learn_set_x[i]
+	t = learn_set_t[i]
+
+	for k in range(2):
 		#print "x = %01.2f" % learn_set[i][0], " y = %01.2f" % learn_set[i][1]
-		x = learn_set[i][0]
-		t = learn_set[i][1]
 		y = m * x + c
 		delta = t - y
-		#print "\t delta = %01.2f" % delta, "t = %01.2f" %t, "y = %01.2f" %y
+		print "\t delta = %01.2f" % delta, "t = %01.2f" %t, "y = %01.2f" %y
 		
 		# update network
 		delta_m = nu * delta * x
 		delta_c = nu * delta * c
 		c = c + delta_c
 		m = m + delta_m
+		print "\t m = " , m, " c = ", y
+		print "---------"
 
 print "m = %01.2f" % m, "c = %01.2f" % c
+
+plot(learn_set_x,learn_set_t)
+show()
