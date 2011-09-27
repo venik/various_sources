@@ -1,5 +1,10 @@
+CC=arm-none-linux-gnueabi-gcc
+
 all: sum.c ex.c
-	gcc sum.c ex.c -o ex
+	$(CC) $^ -o ex
+
+asm: sum.c ex.c
+	$(CC) -S $^ 
 
 clean:
-	rm -f ex core
+	rm -f ex core ex.s sum.s
