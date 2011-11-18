@@ -10,7 +10,7 @@ from numpy import *
 def make_line():
 	print "*" * 20
 
-# distance calculate as
+# distance calculate in eucled form as
 # d_j = sum(w_ij - x_i)^2
 def calc_dist(w, x):
 	d = (	[round(sum([(x.item(0) - w.item(0, 0))**2,
