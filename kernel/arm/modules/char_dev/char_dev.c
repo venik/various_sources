@@ -9,7 +9,7 @@
 #define EOK 0
 #define DEVCOUNT 1
 #define MODNAME "hello_mod"
-#define DEVNAME "hello_char"
+#define DEVNAME "zz0"
 
 MODULE_AUTHOR("Alex Nikiforov");
 MODULE_LICENSE("GPL");
@@ -48,6 +48,7 @@ hello_init(void)
 {
 	dev_t		dev;
 	int 		ret;
+	struct device	*ddev;
 	
 	printk( "Hello, world!" ); 
 	
@@ -61,10 +62,8 @@ hello_init(void)
 
 	/* character device part */	
 	cdev_init(&hcdev, &hello_fops);
-
-	/* FIXME ?? */
 	hcdev.owner = THIS_MODULE; 
-	hcdev.ops = &hello_fops;   // обязательно! - cdev_init() недостаточно? 
+	hcdev.ops = &hello_fops;   	// FIXME
 
 	ret = cdev_add(&hcdev, dev, DEVCOUNT);
 	if (ret) {
@@ -75,17 +74,23 @@ hello_init(void)
 	hello_class = class_create(THIS_MODULE, "hello_class");
 	if (IS_ERR(hello_class)) {
 		printk(KERN_ERR "Error creating hello class.\n");
-		cdev_del(&hcdev);
 		ret = PTR_ERR(hello_class);
 		goto error_region;
 	}
 	
-	device_create(hello_class, NULL, dev, "%s", DEVNAME);
+	ddev = device_create(hello_class, NULL, dev, NULL, DEVNAME);
+	if (IS_ERR(ddev)) {
+		printk(KERN_ERR "Error. Cannot create the character device\n");
+		ret = PTR_ERR(ddev);
+		goto error_region;
+	}
 
-	printk( KERN_INFO "=============== module installed [%d:%d]==================\n", MAJOR(dev), MINOR(dev)); 
-	return EOK;
+	printk( KERN_INFO "=============== module installed [%d:%d] ptr ddev = 0x%p str = %s\n",
+			MAJOR(dev), MINOR(dev), ddev, ddev->kobj.name); 
+	return ret;
 
 error_region:
+	cdev_del(&hcdev);
 	unregister_chrdev_region(MKDEV(major, 0), DEVCOUNT);
 
 error:
