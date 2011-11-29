@@ -1,3 +1,9 @@
 linux-kernel
 rootfs
 tags
+*.ko
+*.o
+*.order
+*.cmd
+.tmp_versions*
+Module.symvers
