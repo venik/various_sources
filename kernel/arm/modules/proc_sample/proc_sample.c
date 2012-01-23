@@ -15,7 +15,7 @@ ssize_t my_read(struct file *fd, char __user *u_buf, size_t size, loff_t *offt)
 	static int odd = 0;
 	printk( KERN_INFO "read: %d\n", size );
 	if( 0 == odd ) {
-		int res = copy_to_user( (void*)u_buf, &string_in_kernel_space, strlen(string_in_kernel_space));
+		int res = copy_to_user( (void*)u_buf, string_in_kernel_space, strlen(string_in_kernel_space));
 		odd = 1;
 		put_user('\n', u_buf + strlen(string_in_kernel_space)); 
 		res = strlen(string_in_kernel_space) + 1;
@@ -42,7 +42,7 @@ static struct file_operations fops = {
 static int __init
 hello_init(void)
 {
-	int	ret;
+	int	ret = 0;
 
 
 	pde = create_proc_entry(name_node, S_IFREG | S_IRUGO | S_IWUGO, NULL);
@@ -63,6 +63,7 @@ err_node:
 static void __exit
 hello_exit(void)
 {
+	printk( "[%s] Succesully removed\n", name_node); 
 	remove_proc_entry(name_node, NULL);
 }
 
