@@ -5,6 +5,7 @@
 #include <linux/proc_fs.h> 
 #include <linux/uaccess.h> 
 
+
 static char *name_node = "my_proc_entry";
 static char *string_in_kernel_space = "Kernel space";
 
@@ -39,12 +40,13 @@ static struct file_operations fops = {
 	.write = &my_write,
 };
 
+
 static int __init
 hello_init(void)
 {
 	int	ret = 0;
 
-
+	/* make proc */
 	pde = create_proc_entry(name_node, S_IFREG | S_IRUGO | S_IWUGO, NULL);
 	if(!pde) {
 		ret = ENOMEM;
@@ -63,8 +65,9 @@ err_node:
 static void __exit
 hello_exit(void)
 {
-	printk( "[%s] Succesully removed\n", name_node); 
 	remove_proc_entry(name_node, NULL);
+	
+	printk( "[%s] Succesully removed\n", name_node); 
 }
 
 module_init(hello_init);

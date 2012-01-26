@@ -8,7 +8,7 @@ DEST = ./
 ARCH=arm
 
 TARGET = proc_sample
-obj-m      := $(TARGET).o 
+obj-m      := $(TARGET).o
 
 default:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules 
