@@ -1,0 +1,29 @@
+NULLDEREF -- A module for playing with kernel NULL pointer dereferences
+
+BUILDING
+This module should build against any remotely recent 2.6 kernel. To
+build, you'll need the kernel headers for your kernel installed. On
+Debian or Ubuntu, try:
+ # apt-get install linux-headers-$(uname -r)
+on Fedora, try:
+ # yum install kernel-devel
+
+Once you've got those, just run 'make' to produce a 'nullderef.ko'
+file.
+
+USING
+
+nullderef uses sysfs to export its hooks. Simply
+ # insmod nullderef.ko
+
+You shuld now have a /sys/module/nullderef/parameters/ directory,
+containing two files, "read", and "call".
+
+Reading from either of these files will result in a NULL pointer
+dereference in the kernel. "read" will simply try to read a NULL
+pointer. "call" will read a function pointer from the NULL address,
+and then attempt to call through the resulting pointer.
+
+Once you're done crashing your kernel, if your machine is still
+stable, you can remove the module using:
+ # rmmod nullderef
