@@ -6,20 +6,20 @@ MODULE_LICENSE("GPL");
 
 int evil(void)
 {
-	pr_warn("Injected\n");
+	pr_warn("%s(): Injected\n", __func__);
 	return 0;
 }
 
-int hello_init(void)
+int init(void)
 {
-	pr_warn("Hello, world!\n"); 
+	pr_warn("%s(): Hello, world!\n", __func__); 
 	return 0;
 }
 
-void hello_exit(void)
+void extt(void)
 {
-	pr_warn("Goodbue, world!\n"); 
+	pr_warn("%s(): Goodbue, world!\n", __func__); 
 }
 
-module_init(hello_init);
-module_exit(hello_exit);
+module_init(init);
+module_exit(extt);
