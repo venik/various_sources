@@ -18,12 +18,12 @@ int main (int argc, char **argv)
 	Elf32_Shdr	sech, sym_sec, symt_sec;
 	Elf32_Sym	symb;
 
-	if (argc < 2) {
-		printf("[ERR] wrong format need ./a.out symbol addr\n");
+	if (argc < 3) {
+		printf("[ERR] wrong format need ./a.out module.ko symbol 0xADDR\n");
 		exit(1);
 	}
 
-	fd = open("simple.ko", O_RDWR);
+	fd = open(argv[1], O_RDWR);
 	if (fd < 0 ) {
 		printf("[ERR] cannot open elf file. errno: %s\n", strerror(errno));
 		exit(1);
@@ -102,13 +102,13 @@ int main (int argc, char **argv)
 
 		//printf("%d: st_name:%d\t%s\n", i, symb.st_name, sym_table + symb.st_name);
 
-		if(!strcmp(sym_table + symb.st_name, argv[1])) {
+		if(!strcmp(sym_table + symb.st_name, argv[2])) {
 			char	*st_name_ptr = sym_table + symb.st_name;
 			printf("found %s symbol id:%d\n", st_name_ptr, i);
 			
 			/* write it */
 			lseek(fd, sym_sec.sh_offset + sizeof(symb) * i, SEEK_SET);
-			sscanf(argv[2], "0x%x", &symb.st_value);
+			sscanf(argv[3], "0x%x", &symb.st_value);
 			res = write(fd, &symb, sizeof(symb));
 			if (res < sizeof(symb)) {
 				printf("[ERR] cannot patch elf file. errno: %s", strerror(errno));
@@ -120,7 +120,7 @@ int main (int argc, char **argv)
 	} // for(i=0)
 
 	if (i == sym_num) {
-		printf("[ERR] symbol not found\n");
+		printf("[ERR] symbol %s not found\n", argv[2]);
 		goto out;	
 	}
 
