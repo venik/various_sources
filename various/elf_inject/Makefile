@@ -7,7 +7,7 @@ DEST = ./
 
 ARCH=arm
 
-obj-m      := simple.o simple2.o evil.o
+obj-m      := simple.o simple2.o simple3.o evil.o
 
 default:
 	$(MAKE) -C $(KDIR) M=$(PWD) modules 
