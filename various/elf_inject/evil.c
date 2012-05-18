@@ -7,6 +7,6 @@ extern int init(void);
 
 int evil(void)
 {
-	pr_warn("%s(): Injected\n", __func__);
+	pr_warn("%s %s(): Injected\n", __FILE__, __func__);
 	return init();
 }

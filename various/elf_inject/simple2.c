@@ -6,13 +6,13 @@ MODULE_LICENSE("GPL");
 
 int init(void)
 {
-	pr_warn("%s(): Hello, world!\n", __func__); 
+	pr_warn("%s %s(): Hello, world!\n", __FILE__, __func__); 
 	return 0;
 }
 
 void extt(void)
 {
-	pr_warn("%s(): Goodbue, world!\n", __func__); 
+	pr_warn("%s %s(): Goodbue, world!\n", __FILE__, __func__); 
 }
 
 module_init(init);
