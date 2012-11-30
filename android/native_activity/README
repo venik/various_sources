@@ -1,0 +1,11 @@
+Native activity with Java class binding
+
+GPLv3 Alex Nikiforov nikiforov.pub@gmail.com
+
+to compile (from directory in README level)
+
+# android update project -p ./ --target android-14
+# cd jni
+# ndk-build
+# cd ..
+# ant debug
